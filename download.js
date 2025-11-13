@@ -1,5 +1,7 @@
 let presentationId = process.env.PRESENTATION_ID
 
+await Bun.$`rm -rf ./tmp/*`
+
 let pageIds = await getPageIds()
 let pageNums = JSON.parse(process.env.PRESENTATION_PAGES) // which slides to get (zero-indexed)
 
@@ -7,6 +9,7 @@ for (let pageNum of pageNums) {
   let pageId = pageIds[pageNum]
   await downloadPageSvg(pageNum, pageId)
 }
+await Bun.$`rm -rf ./slides && mv ./tmp ./slides`
 
 // page ids are in some random script in the <html> returned from .../present
 // this function gets the HTML, then finds "var viewerData = { ... }"
@@ -24,7 +27,7 @@ async function getPageIds () {
 async function downloadPageSvg (pageNum, pageId) {
   let url = `https://docs.google.com/presentation/d/${presentationId}/export/svg?id=${presentationId}&pageid=${pageId}`
   console.log('Downloading SVG for page', pageNum, url)
-  await Bun.write(`slides/page-${pageNum}.svg`, await fetch(url))
+  await Bun.write(`tmp/page-${pageNum}.svg`, await fetch(url))
   // feh needs svgs not pngs
-  await Bun.$`rsvg-convert -w 1920 -h 1080 slides/page-${pageNum}.svg -o slides/${pageNum}.png`
+  await Bun.$`rsvg-convert -w 1920 -h 1080 tmp/page-${pageNum}.svg -o tmp/${pageNum}.png`
 }
