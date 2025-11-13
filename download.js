@@ -12,6 +12,7 @@ for (let pageNum of pageNums) {
   await downloadPageSvg(pageNum, pageId)
 }
 console.log('Copying to slideshow folder')
+await Bun.$`rm -rf ./tmp/*.svg || true`
 await Bun.$`rm -rf ./slides || true && mv ./tmp ./slides`
 
 // page ids are in some random script in the <html> returned from .../present
