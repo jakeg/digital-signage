@@ -1,0 +1,1 @@
+Bun.$`feh --fullscreen --slideshow-delay 5 ./slides/`
