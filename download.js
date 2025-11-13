@@ -7,6 +7,7 @@ let pageIds = await getPageIds()
 console.log(`Got page ids for ${pageIds.length} pages`)
 let pageNums = JSON.parse(process.env.PRESENTATION_PAGES) // which slides to get (zero-indexed)
 
+console.log(`Downloading slides for ${pageNums.length} pages:`, pageNums)
 for (let pageNum of pageNums) {
   let pageId = pageIds[pageNum]
   await downloadPageSvg(pageNum, pageId)
