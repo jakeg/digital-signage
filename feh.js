@@ -1,1 +1,1 @@
-await Bun.$`feh --fullscreen --slideshow-delay 5 ./slides/`
+await Bun.$`feh --fullscreen --slideshow-delay 1 ./slides/`
