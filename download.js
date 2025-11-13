@@ -1,6 +1,6 @@
 let presentationId = process.env.PRESENTATION_ID
 
-await Bun.$`rm -rf ./tmp/*`
+await Bun.$`rm -rf ./tmp/* || true`
 
 let pageIds = await getPageIds()
 let pageNums = JSON.parse(process.env.PRESENTATION_PAGES) // which slides to get (zero-indexed)
@@ -9,7 +9,7 @@ for (let pageNum of pageNums) {
   let pageId = pageIds[pageNum]
   await downloadPageSvg(pageNum, pageId)
 }
-await Bun.$`rm -rf ./slides && mv ./tmp ./slides`
+await Bun.$`rm -rf ./slides || true && mv ./tmp ./slides`
 
 // page ids are in some random script in the <html> returned from .../present
 // this function gets the HTML, then finds "var viewerData = { ... }"
