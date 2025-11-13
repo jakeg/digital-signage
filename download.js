@@ -26,5 +26,5 @@ async function downloadPageSvg (pageNum, pageId) {
   console.log('Downloading SVG for page', pageNum, url)
   await Bun.write(`slides/page-${pageNum}.svg`, await fetch(url))
   // feh needs svgs not pngs
-  await Bun.$`rsvg-convert -w 1920 -h 1080 slides/page-${pageNum}.svg slides/${pageNum}.png`
+  await Bun.$`rsvg-convert -w 1920 -h 1080 slides/page-${pageNum}.svg -o slides/${pageNum}.png`
 }
