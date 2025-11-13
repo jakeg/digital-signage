@@ -29,7 +29,7 @@ async function getPageIds () {
 
 async function downloadPageSvg (pageNum, pageId) {
   let url = `https://docs.google.com/presentation/d/${presentationId}/export/svg?id=${presentationId}&pageid=${pageId}`
-  console.log('Downloading SVG for page', pageNum, url)
+  console.log('Downloading SVG for page', pageNum)
   await Bun.write(`tmp/page-${pageNum}.svg`, await fetch(url))
   // feh needs svgs not pngs
   console.log('Converting SVG to PNG')
