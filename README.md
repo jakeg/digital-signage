@@ -1,6 +1,6 @@
 # Digital signage
 
-For use on eg a Raspberry Pi Zero 2 W. Shows the chosen slides on repeat from a public Google Slides slideshow, using `feh` on a minimal `x11`.
+For use on eg a Raspberry Pi Zero 2 W. Shows the chosen slides on repeat from a public Google Slides slideshow, using `feh` on a minimal `x11`. Uses ~130MB of memory, so well within the 512MB the Zero 2 has.
 
 ## Installing
 
