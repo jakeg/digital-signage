@@ -101,6 +101,11 @@ Disable the screen going blank/to sleep
 - change the first bit of the crontab from `*/1` to eg `*/3` to only check for updates every 3mins instead
 - if the code changes `git pull` in `~/digital-signage`
 
+## Quieter boot
+
+- `sudo nano /boot/firmware/cmdline.txt`
+  - add `quiet disable_splash loglevel=3` to end of the one line
+
 ---
 
 NOTE: these attempts didn't work
