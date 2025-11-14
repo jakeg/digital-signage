@@ -27,7 +27,6 @@ async function getPageIds () {
   let url = `https://docs.google.com/presentation/d/${presentationId}/present`
   let html = await (await fetch(url)).text()
   let match = html.match(/var viewerData\s*=\s*({.*?});/s)
-  console.log
   let fn = new Function(`return ${match[1]}`)
   let pageIds = fn().docData[1].map(v => v[0])
   return pageIds
