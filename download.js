@@ -1,5 +1,7 @@
 let presentationId = process.env.PRESENTATION_ID
 
+let sleep = t => new Promise(r => setTimeout(r, t))
+
 console.log('Cleaning up')
 await Bun.$`rm -rf ./tmp/* || true`
 
@@ -11,6 +13,7 @@ console.log(`Downloading slides for ${pageNums.length} pages:`, pageNums)
 for (let pageNum of pageNums) {
   let pageId = pageIds[pageNum]
   await downloadPageSvg(pageNum, pageId)
+  await sleep(2_000) // google slides rate limits maybe so sleep?
 }
 console.log('Copying to slideshow folder')
 await Bun.$`rm -rf ./tmp/*.svg || true`
