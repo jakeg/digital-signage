@@ -34,7 +34,7 @@ PRESENTATION_PAGES="[0, 1]"
 - `sudo update-alternatives --config x-session-manager` and choose openbox
 
 
-## fbi instead of feh
+## fbi instead of feh - **no, will flicker**
 
 For the most lightweight of setups
 
@@ -44,3 +44,34 @@ For the most lightweight of setups
   `q` to exit, or `reset` if can't see typed text if exited another way
 - still want the crontab
 - `sudo raspi-config` under system options, set auto login
+
+## fbv instead of fbi - **no, can't get it installed**
+
+So it doesn't flicker
+
+- `sudo apt install build-essential autoconf automake libpng-dev libjpeg-dev libgif-dev zlib1g-dev`
+- `git clone https://github.com/smokku/fbv.git`
+- `cd fbv`
+- `./configure`
+- `make`
+- `sudo make install`
+
+## feh
+
+Can't get fbv to install, so just use feh and x11
+
+- `sudo apt install xorg openbox`
+- `startx /usr/bin/feh --fullscreen --auto-zoom --slideshow-delay 15 ~/digtial-signage/slides/*.png`
+
+Then when confirmed to work, add this to `~/.profile`
+
+```bash
+# Only run on the first virtual console
+if [ "$(tty)" = "/dev/tty1" ]; then
+  startx /usr/bin/feh --fullscreen --auto-zoom --slideshow-delay 15 ~/digtial-signage/slides/*.png
+fi
+```
+
+- exit with `q`
+- get a CLI with ctrl+alt+f2
+- rerun with `source ~/.profile`
