@@ -119,6 +119,7 @@ Disable the screen going blank/to sleep
 ## School firewall issue
 
 School firewall seems to block debian repos. Edit the 2 URLs in `/etc/apt/sources.list.d/debian.sources` to include `http://cdn-fastly.deb.debian.org/` instead to fix it.
+
 ---
 
 NOTE: these attempts didn't work
