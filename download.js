@@ -35,8 +35,13 @@ async function getPageIds () {
 async function downloadPageSvg (pageNum, pageId) {
   let url = `https://docs.google.com/presentation/d/${presentationId}/export/svg?id=${presentationId}&pageid=${pageId}`
   console.log('Downloading SVG for page', pageNum)
-  await Bun.write(`tmp/page-${pageNum}.svg`, await fetch(url))
-  // feh needs svgs not pngs
-  console.log('Converting SVG to PNG')
-  await Bun.$`rsvg-convert -w 1920 -h 1080 tmp/page-${pageNum}.svg -o tmp/${pageNum}.png`
+  let res = await fetch(url)
+  if (res.ok) {
+    await Bun.write(`tmp/page-${pageNum}.svg`, res)
+    // feh needs svgs not pngs
+    console.log('Converting SVG to PNG')
+    await Bun.$`rsvg-convert -w 1920 -h 1080 tmp/page-${pageNum}.svg -o tmp/${pageNum}.png`
+  } else {
+    console.error('problem fetching page', pageNum)
+  }
 }
