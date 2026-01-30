@@ -41,14 +41,24 @@ Now we need to set up a minimal openbox x11 which `feh` needs to run
 - `sudo apt install xorg openbox`
 - `startx /usr/bin/feh --fullscreen --auto-zoom --slideshow-delay 15 ~/digtial-signage/slides/*.png`
 - exit with `q` or change to a new terminal with `CTRL+ALT+F[x]` etc
-- when confirmed to work, add this to `~/.profile`
+- when confirmed to work, add this to `~/.xinitrc` (create the file if it doesn't exist)
+```bash
+#!/bin/sh
+xset -dpms
+xset s off
+xset s noblank
+
+exec /usr/bin/feh --fullscreen --auto-zoom --slideshow-delay 15 ~/digital-signage/slides
+```
+- add this to `~/.profile`:
 ```bash
 # only run on the first virtual console and not over eg ssh
 if [ "$(tty)" = "/dev/tty1" ]; then
-  startx /usr/bin/feh --fullscreen --auto-zoom --slideshow-delay 15 ~/digtial-signage/slides/*.png
+  startx
+  #startx /usr/bin/feh --fullscreen --auto-zoom --slideshow-delay 15 ~/digtial-signage/slides/*.png
 fi
 ```
-- rerun and check it works with `source ~/.profile`
+- rerun and check it works with `startx` (was: `source ~/.profile`)
 
 Should now be able to re
 
@@ -96,7 +106,7 @@ Disable the screen going blank/to sleep
 
 ## Customising slides and time per slide and pulling in updates
 
-- each slide will show for 15s - customise this in `--slideshow-delay=15` in `~/.profile`
+- each slide will show for 15s - customise this in `--slideshow-delay=15` in `~/.xinitrc` (was: `~.profile`)
 - edit `~/digital-signage/.env` then `PRESENTATION_PAGES` to choose different slide numbers to show
 - change the first bit of the crontab from `*/1` to eg `*/3` to only check for updates every 3mins instead
 - if the code changes `git pull` in `~/digital-signage`
