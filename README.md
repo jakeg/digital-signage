@@ -92,9 +92,19 @@ chmod 600 ~/.ssh/authorized_keys
   - Security: WPA & WPA2 Enterprise
   - Authentication: PEAP
   - Inner Authentication: MSCHAPv2
-  - Username & Password
+  - Username & Password (search my email for `cmsscreen` for email/pw for this)
   - Other fields can be left at default
 Press ok, back, then ok to save the network settings
+
+Note that we can't use the usual `raspi-config` as it's an enterprise PEAP network
+
+Type `nmcli device status` and it will probably say `wlan0` is 'unavailable' rather than connected. If so, try:
+- `nmcli radio wifi on`
+- if status it now says 'connected' all is good
+- otherwise, try `nmcli device set wlan0 managed yes` and the other command again
+- if still doesn't work, try `sudo nano /etc/NetworkManager/NetworkManager.conf` and set `managed=true` for ifupdown
+- then might have to do the other commands above after as well
+- know its working when we can `ping google.com`
 
 ## Screen blanking
 
@@ -115,6 +125,10 @@ Disable the screen going blank/to sleep
 
 - `sudo nano /boot/firmware/cmdline.txt`
   - add `quiet disable_splash loglevel=3` to end of the one line
+
+## School firewall issue
+
+School firewall seems to block debian repos. Edit the 2 URLs in `/etc/apt/sources.list.d/debian.sources` to include `http://cdn-fastly.deb.debian.org/` instead to fix it.
 
 ---
 
