@@ -2,15 +2,22 @@
 
 For use on eg a Raspberry Pi Zero 2 W. Shows the chosen slides on repeat from a public Google Slides slideshow, using `feh` on a minimal `x11`. Uses ~130MB of memory, so well within the 512MB the Zero 2 has.
 
+Machine names:
+- atrium1 in the atrium
+- signage2 in room 5 (want to rename to room-5 but doesn't work)
+
 ## Installing
 
 Use the official Raspberry Pi imager:
 - start with the 'lite' 64bit image (64bit or can't use Bun)
 - when using the imager, give it a user (`student`) and WiFi details to save time later
 
+Consider doing all this over ssh rather than directly on the device (see the ssh section below).
+
 When installed and booted up:
 - log in as `student`
 - `sudo apt update` and `sudo apt upgrade`
+  - see section 'School firewall issue' below if a forbidden issue
 - `sudo apt install git`
 - install Bun
   `curl -fsSL https://bun.sh/install | bash`
@@ -32,8 +39,9 @@ PRESENTATION_PAGES="[0, 1]"
 ```
 - ... the `timeout 20s` will kill it after 20s in case eg fetch() fails
 
-- uses wayland by default and hard to get GUI to open in that on startup so...
-- `sudo update-alternatives --config x-session-manager` and choose openbox
+- I don't think this step is needed any more
+  - uses wayland by default and hard to get GUI to open in that on startup so...
+  - `sudo update-alternatives --config x-session-manager` and choose openbox
 
 - `sudo raspi-config` then 'System options' and set 'Auto login' to enabled
 
@@ -60,13 +68,17 @@ fi
 ```
 - rerun and check it works with `startx` (was: `source ~/.profile`)
 
-Should now be able to re
+Should now be able to restart the machine and it will boot straight into the signage.
+
+If another terminal/tty is needed, ctrl+alt+F3 (ctrl+alt+f1 to get back to main one).
 
 ## SSH logins
 
 - run `sudo raspi-config`
   - under 'system options' change 'hostname' to something like 'atrium1'
-  - save the changes and maybe reboot 
+  - save the changes and maybe reboot
+  ... if it doesn't work, manually edit `/etc/hostname` and `/etc/hosts`
+  ... still doesn't work, and currently no working solution :/
 - create an ssh key on laptop
 - add the ssh key to the machine
 ```bash
@@ -81,6 +93,7 @@ chmod 600 ~/.ssh/authorized_keys
   PermitRootLogin no
   PasswordAuthentication no
   ```
+- `sudo systemctl restart ssh`
 - try ssh'ing in with eg `ssh student@atrium1.local` (with `-p xxx` if a different port) and it should work without a password
 
 ## WiFi
