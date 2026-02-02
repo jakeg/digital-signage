@@ -12,7 +12,9 @@ let pageNums = JSON.parse(process.env.PRESENTATION_PAGES) // which slides to get
 console.log(`Downloading slides for ${pageNums.length} pages:`, pageNums)
 for (let pageNum of pageNums) {
   let pageId = pageIds[pageNum]
-  await downloadPageSvg(pageNum, pageId)
+  if (!(await downloadPageSvg(pageNum, pageId))) {
+    process.exit()
+  }
   await sleep(2_000) // google slides rate limits maybe so sleep?
 }
 console.log('Copying to slideshow folder')
@@ -41,7 +43,9 @@ async function downloadPageSvg (pageNum, pageId) {
     // feh needs svgs not pngs
     console.log('Converting SVG to PNG')
     await Bun.$`rsvg-convert -w 1920 -h 1080 tmp/page-${pageNum}.svg -o tmp/${pageNum}.png`
+    return true
   } else {
     console.error('problem fetching page', pageNum)
+    return false
   }
 }
