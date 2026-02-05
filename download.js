@@ -24,7 +24,9 @@ for (let pageNum of pageNums) {
 console.log('Copying to slideshow folder')
 await Bun.$`rm -rf ./tmp/*.svg || true`
 // await Bun.$`mv -T ./tmp ./slides` // Bun.$ doesn't like the -T flag
-let proc = Bun.spawn(['mv', '-T', './tmp', './slides']) // IMPORTANT: atomic
+// was `rm -rf ./slides || true && mv ./tmp ./slides` but trying to make it more atomic
+await Bun.$`[ -d ./slides ] && mv ./slides ./slides.bak; mv ./tmp ./slides`
+await Bun.$`rm -rf ./slides.bak`
 await proc.exited
 console.log('Done!')
 
