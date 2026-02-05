@@ -27,7 +27,6 @@ await Bun.$`rm -rf ./tmp/*.svg || true`
 // was `rm -rf ./slides || true && mv ./tmp ./slides` but trying to make it more atomic
 await Bun.$`[ -d ./slides ] && mv ./slides ./slides.bak; mv ./tmp ./slides`
 await Bun.$`rm -rf ./slides.bak`
-await proc.exited
 console.log('Done!')
 
 // page ids are in some random script in the <html> returned from .../present
