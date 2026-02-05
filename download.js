@@ -25,8 +25,9 @@ console.log('Copying to slideshow folder')
 await Bun.$`rm -rf ./tmp/*.svg || true`
 // await Bun.$`mv -T ./tmp ./slides` // Bun.$ doesn't like the -T flag
 // was `rm -rf ./slides || true && mv ./tmp ./slides` but trying to make it more atomic
-await Bun.$`[ -d ./slides ] && mv ./slides ./slides.bak; mv ./tmp ./slides`
-await Bun.$`rm -rf ./slides.bak`
+// await Bun.$`[ -d ./slides ] && mv ./slides ./slides.bak; mv ./tmp ./slides`
+// await Bun.$`rm -rf ./slides.bak`
+await Bun.$`rsync -a --delete --temp-dir=./rsync-tmp ./tmp/ ./slides/`
 console.log('Done!')
 
 // page ids are in some random script in the <html> returned from .../present
