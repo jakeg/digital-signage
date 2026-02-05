@@ -6,6 +6,10 @@ console.log('Cleaning up')
 await Bun.$`rm -rf ./tmp/* || true`
 
 let pageIds = await getPageIds()
+if (!pageIds || !pageIds.length) {
+  console.error('Problem getting pageIds', pageIds)
+  process.exit()
+}
 console.log(`Got page ids for ${pageIds.length} pages`)
 let pageNums = JSON.parse(process.env.PRESENTATION_PAGES) // which slides to get (zero-indexed)
 
@@ -19,7 +23,7 @@ for (let pageNum of pageNums) {
 }
 console.log('Copying to slideshow folder')
 await Bun.$`rm -rf ./tmp/*.svg || true`
-await Bun.$`rm -rf ./slides || true && mv ./tmp ./slides`
+await Bun.$`mv -T ./tmp ./slides` // IMPORTANT: atomic
 console.log('Done!')
 
 // page ids are in some random script in the <html> returned from .../present
